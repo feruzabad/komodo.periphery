@@ -1,5 +1,6 @@
 services:
   periphery:
+    container_name: komodo-periphery
     image: ghcr.io/moghtech/komodo-periphery:2.3.4@sha256:fb4b52961fcce7a31e3776930e422967b6640f653de876f59f26dea243e29beb
     init: true
     restart: unless-stopped
