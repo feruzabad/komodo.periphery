@@ -1,0 +1,30 @@
+services:
+  periphery:
+    image: ghcr.io/moghtech/komodo-periphery:2.3.4@sha256:fb4b52961fcce7a31e3776930e422967b6640f653de876f59f26dea243e29beb
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+    environment:
+      TZ: ${TZ:-Europe/Berlin}
+      PERIPHERY_CORE_ADDRESS: wss://${CORE_HOST:?set CORE_HOST}
+      PERIPHERY_CONNECT_AS: ${PERIPHERY_CONNECT_AS:?set PERIPHERY_CONNECT_AS}
+      PERIPHERY_ONBOARDING_KEY: ${PERIPHERY_ONBOARDING_KEY:-}
+      PERIPHERY_CORE_PUBLIC_KEYS: file:/config/keys/core.pub
+      PERIPHERY_ROOT_DIRECTORY: ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
+      PERIPHERY_DISABLE_TERMINALS: ${PERIPHERY_DISABLE_TERMINALS:-true}
+      PERIPHERY_DISABLE_CONTAINER_TERMINALS: ${PERIPHERY_DISABLE_CONTAINER_TERMINALS:-true}
+      PERIPHERY_INCLUDE_DISK_MOUNTS: ${PERIPHERY_INCLUDE_DISK_MOUNTS:-/etc/hostname}
+      PERIPHERY_LOGGING_PRETTY: ${PERIPHERY_LOGGING_PRETTY:-false}
+    volumes:
+      - ./keys:/config/keys
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /proc:/proc
+      - ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}:${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
+    extra_hosts:
+      - ${CORE_HOST}:${CORE_TAILSCALE_IP:?set CORE_TAILSCALE_IP}
