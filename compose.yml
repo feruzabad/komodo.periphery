@@ -5,17 +5,12 @@ services:
     restart: unless-stopped
     network_mode: host
     labels:
-      # Prevents Komodo from accidentally shutting down its own agent when managing all host containers
       komodo.skip: "true"
     environment:
-      # Path mapping for managed stacks and cloned repositories
       - PERIPHERY_ROOT_DIRECTORY=/etc/komodo
       - PERIPHERY_STACK_DIR=/etc/komodo/stacks
       - PERIPHERY_REPO_DIR=/etc/komodo/repos
-      # Passkey for Core -> Periphery authentication (set in .env)
       - PERIPHERY_PASSKEYS=${PERIPHERY_PASSKEYS:?set PERIPHERY_PASSKEYS in .env}
-      # Core Public Keys (Ed25519) if using v2 PKI authentication
-      # - PERIPHERY_CORE_PUBLIC_KEYS=${PERIPHERY_CORE_PUBLIC_KEYS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/komodo:/etc/komodo
