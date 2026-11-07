@@ -3,6 +3,9 @@ services:
     container_name: komodo-periphery
     image: ghcr.io/moghtech/komodo-periphery:2.3.4@sha256:fb4b52961fcce7a31e3776930e422967b6640f653de876f59f26dea243e29beb
     init: true
+    networks:
+      shared:
+        ipv4_address: ${NETWORK_IPV4_ADDRESS:?set NETWORK_IPV4_ADDRESS}
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -29,3 +32,8 @@ services:
       - ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}:${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
     extra_hosts:
       - ${CORE_HOST}:${CORE_TAILSCALE_IP:?set CORE_TAILSCALE_IP}
+
+networks:
+  shared:
+    name: ${NETWORK_NAME:?set NETWORK_NAME}
+    external: true

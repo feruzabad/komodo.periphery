@@ -9,6 +9,8 @@ Komodo Periphery (remote agent), run with Docker Compose. Periphery connects out
     cp env.example .env && chmod 600 .env && $EDITOR .env
     sudo docker compose up -d
 
+Periphery joins an existing Docker network (`NETWORK_NAME`) with a fixed address (`NETWORK_IPV4_ADDRESS`), both set in `.env`. Create the network first.
+
 `.env` and `keys/` are git-ignored. Remove `PERIPHERY_ONBOARDING_KEY` from `.env` once the server shows up in Komodo.
 
 ## Update
